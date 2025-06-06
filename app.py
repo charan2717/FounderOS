@@ -24,14 +24,6 @@ def get_db_connection():
 def init_db():
     conn = get_db_connection()
     c = conn.cursor()
-    try:
-      c.execute("ALTER TABLE posts ADD COLUMN image_path TEXT")
-      print("image_path column added successfully.")
-    except sqlite3.OperationalError as e:
-      if "duplicate column name" in str(e).lower():
-        print("Column already exists.")
-      else:
-        raise
     # Users table
     c.execute('''
         CREATE TABLE IF NOT EXISTS users (
