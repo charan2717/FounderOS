@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Founder Dashboard - {{ user }}</title>
+  <a href="https://bolt.new" target="_blank"
+    class="ms-2 px-2 py-1 text-xs font-medium text-white bg-teal-600 rounded-full hover:bg-teal-700 transition-colors">bolt.new</a>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --primary-hover: #1d4ed8;
+      --secondary-color: #64748b;
+      --success-color: #10b981;
+      --warning-color: #f59e0b;
+      --danger-color: #ef4444;
+      --background-color: #f8fafc;
+      --surface-color: #ffffff;
+      --border-color: #e2e8f0;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --radius-lg: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--background-color);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding-top: 80px !important;
+      margin: 0;
+    }
+
+    /* Navigation Enhancements */
+    .navbar {
+      backdrop-filter: blur(20px);
+      background: rgba(37, 99, 235, 0.95) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: var(--shadow-lg);
+      padding: 1rem 0;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: -0.025em;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border-radius: var(--radius-sm);
+      margin: 0 0.25rem;
+      padding: 0.5rem 1rem !important;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .navbar-text {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+    }
+
+    .btn-outline-light {
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-light:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-1px);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      padding: 2rem 1rem;
+    }
+
+    /* Page Title */
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 2rem;
+      letter-spacing: -0.025em;
+    }
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Section Cards */
+    section {
+      background: var(--surface-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+    }
+
+    section:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    section h3,
+    section h4 {
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.25rem;
+    }
+
+    section h3::before,
+    section h4::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--primary-color);
+      border-radius: 50%;
+    }
+
+    /* Progress Section */
+    .progress-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+    }
+
+    .progress-section::before {
+      display: none;
+    }
+
+    .progress-section h4 {
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-section h4::before {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .progress {
+      height: 12px !important;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .progress-bar {
+      background: linear-gradient(90deg, #10b981, #059669);
+      border-radius: 6px;
+      transition: width 0.3s ease;
+      font-size: 0.875rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .progress-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    #progress-ticker {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 1.1rem;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    /* Celebration Banner */
+    .celebration {
+      background: linear-gradient(135deg, #10b981, #059669) !important;
+      border: none !important;
+      color: white !important;
+      padding: 1.5rem !important;
+      border-radius: var(--radius-lg) !important;
+      margin-top: 1.5rem !important;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+      box-shadow: var(--shadow-md);
+      animation: celebrationPulse 2s infinite;
+    }
+
+    @keyframes celebrationPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.02);
+      }
+    }
+
+    /* List Groups */
+    .list-group {
+      border: none;
+      gap: 0.75rem;
+    }
+
+    .list-group-item {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      background: #f8fafc;
+      transition: all 0.3s ease;
+      margin-bottom: 0;
+    }
+
+    .list-group-item:hover {
+      background: white;
+      transform: translateX(4px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .list-group-item strong {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    /* Buttons */
+    .btn {
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      transition: all 0.3s ease;
+      border: none;
+      padding: 0.75rem 1.5rem;
+    }
+
+    .btn-primary {
+      background: var(--primary-color);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    .edit-button {
+      background: linear-gradient(135deg, var(--primary-color), #3b82f6);
+      color: white;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      border-radius: var(--radius-lg);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: var(--shadow-lg);
+      margin-top: 2rem;
+    }
+
+    .edit-button::after {
+      content: '→';
+      transition: transform 0.3s ease;
+    }
+
+    .edit-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+    }
+
+    .edit-button:hover::after {
+      transform: translateX(4px);
+    }
+
+    /* Form Elements */
+    .form-check {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 100%;
+    }
+
+    .form-check-input {
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 2px solid var(--border-color);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .form-check-input:checked {
+      background: var(--success-color);
+      border-color: var(--success-color);
+    }
+
+    .form-check-input:focus {
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+
+    .form-check-label {
+      font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .form-check-label del {
+      color: var(--text-muted);
+      text-decoration-thickness: 2px;
+    }
+
+    /* Empty States */
+    section p {
+      color: var(--text-secondary);
+      margin-bottom: 0;
+      font-style: italic;
+    }
+
+    section p a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    section p a:hover {
+      text-decoration: underline;
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      display: block;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      section {
+        padding: 1.5rem;
+      }
+
+      .progress-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+      }
+
+      #progress-ticker {
+        text-align: center;
+      }
+
+      .list-group-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .edit-button {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+      }
+    }
+
+    /* Animation for page load */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    section {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    section:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    section:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    section:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    section:nth-child(4) {
+      animation-delay: 0.4s;
+    }
+
+    /* Bolt.new link styling */
+    a[href*="bolt.new"] {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1000;
+      background: linear-gradient(135deg, #14b8a6, #0d9488);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.75rem;
+      box-shadow: var(--shadow-lg);
+      transition: all 0.3s ease;
+    }
+
+    a[href*="bolt.new"]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="#">Founder OS</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('news') }}">News</a>
+          </li>
+
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('community') }}">Community</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://ai-0jiu.onrender.com/">Base-AI</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Resume Summary(soon)</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('profile', username=user) }}">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('search') }}">Search Users</a>
+          </li>
+        </ul>
+        <span class="navbar-text me-3">Logged in as: {{ user }}</span>
+        </ul>
+
+        <a href="{{ url_for('logout') }}" class="btn btn-outline-light btn-sm">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h1 class="mb-4">Welcome, {{ user }}</h1>
+
+    <!-- Progress Bar -->
+    <section class="mb-4">
+      <h4>Goals Progress</h4>
+      <div class="d-flex align-items-center gap-3 mb-2">
+        <div class="progress flex-grow-1">
+          <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0"
+            aria-valuemin="0" aria-valuemax="100">0%</div>
+        </div>
+        <div id="progress-ticker" style="min-width: 50px; font-weight: bold;">0%</div>
+      </div>
+      {% if celebration %}
+      <div class="celebration mt-3">
+        🎉 Congratulations! You have completed all your goals! 🎉
+      </div>
+      {% endif %}
+    </section>
+
+    <!-- Projects Summary -->
+    <section class="mb-5">
+      <h3>Your Projects</h3>
+      {% if projects %}
+      <ul class="list-group">
+        {% for project in projects %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div><strong>{{ project.project_name }}</strong> — {{ project.project_desc }}</div>
+          <a href="{{ url_for('founder_edit', project_id=project.id) }}" class="btn btn-sm btn-primary">Edit</a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>You have no projects yet. <a href="{{ url_for('founder_edit') }}">Add some</a></p>
+      {% endif %}
+    </section>
+
+    <!-- Startup Online -->
+    <!-- Team Summary -->
+    <section class="mb-5">
+      <h3>Your Team Members</h3>
+      {% if team_members %}
+      <ul class="list-group">
+        {% for member in team_members %}
+        <li class="list-group-item"><strong>{{ member.member_name }}</strong> — {{ member.member_role }}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No team members yet. <a href="{{ url_for('founder_edit') }}">Add some</a></p>
+      {% endif %}
+    </section>
+
+    <!-- Goals Summary -->
+    <!-- Goals Summary -->
+    <section class="mb-5">
+      <h3>Your Goals</h3>
+      {% if goals %}
+      <ul class="list-group">
+        {% for goal in goals %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <form method="POST" action="{{ url_for('mark_goal_complete', goal_id=goal.id) }}"
+            class="d-flex align-items-center w-100">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="completed" onchange="this.form.submit()" {% if
+                goal.completed %}checked{% endif %}>
+              <label class="form-check-label ms-2">
+                {% if goal.completed %}
+                <del>{{ goal.goal_desc }}</del>
+                {% else %}
+                {{ goal.goal_desc }}
+                {% endif %}
+              </label>
+            </div>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No goals yet. <a href="{{ url_for('founder_edit') }}">Add some</a></p>
+      {% endif %}
+    </section>
+
+
+    <!-- Edit Button -->
+    <a href="{{ url_for('founder_edit') }}" class="btn btn-primary edit-button">Edit Details</a>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const progressBar = document.getElementById('progress-bar');
+      const ticker = document.getElementById('progress-ticker');
+      let width = 0;
+      const target = {{ progress_percent|default (0)
+    }};
+    const interval = setInterval(() => {
+      if (width >= target) {
+        clearInterval(interval);
+      } else {
+        width++;
+        progressBar.style.width = width + '%';
+        progressBar.setAttribute('aria-valuenow', width);
+        progressBar.textContent = width + '%';
+        ticker.textContent = width + '%';
+      }
+    }, 20);
+    });
+  </script>
+</body>
+
+</html>

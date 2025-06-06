@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Community</title>
+  <style>
+    :root {
+      --primary-color: #6366f1;
+      --primary-hover: #4f46e5;
+      --secondary-color: #f8fafc;
+      --accent-color: #10b981;
+      --danger-color: #ef4444;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --text-muted: #9ca3af;
+      --border-color: #e5e7eb;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      line-height: 1.6;
+      color: var(--text-primary);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h2 {
+      color: white;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      letter-spacing: -0.025em;
+    }
+
+    .post,
+    .comment,
+    .reply {
+      background: white;
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .post::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    }
+
+    .post:hover,
+    .comment:hover,
+    .reply:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .comment {
+      margin-left: 2rem;
+      margin-top: 1rem;
+      background: var(--secondary-color);
+      border-left: 4px solid var(--primary-color);
+    }
+
+    .reply {
+      margin-left: 2rem;
+      margin-top: 1rem;
+      background: #fefefe;
+      border-left: 4px solid var(--accent-color);
+    }
+
+    .author {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .author::before {
+      content: '👤';
+      font-size: 1.2rem;
+    }
+
+    .small {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-left: auto;
+    }
+
+    .post p:not(.author),
+    .comment p:not(.author),
+    .reply p:not(.author) {
+      margin: 1rem 0;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    /* Form Styles */
+    form {
+      margin-top: 1.5rem;
+    }
+
+    form label {
+      display: block;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+
+    form textarea,
+    form input[type="text"],
+    form input[type="file"] {
+      width: 100%;
+      padding: 0.875rem;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      background: white;
+      margin-bottom: 1rem;
+    }
+
+    form textarea:focus,
+    form input[type="text"]:focus,
+    form input[type="file"]:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    form textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    form input[type="file"] {
+      padding: 0.75rem;
+      cursor: pointer;
+    }
+
+    form input[type="file"]::-webkit-file-upload-button {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      margin-right: 1rem;
+      font-weight: 500;
+      transition: background 0.3s ease;
+    }
+
+    form input[type="file"]::-webkit-file-upload-button:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Button Styles */
+    form button,
+    .btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.875rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    form button:hover,
+    .btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    form button:active,
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      background: var(--primary-color);
+    }
+
+    .btn-danger {
+      background: var(--danger-color);
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    /* Home button */
+    .home {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .home .btn {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      font-weight: 600;
+    }
+
+    .home .btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Image Styles */
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius-sm);
+      margin-top: 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.3s ease;
+    }
+
+    img:hover {
+      transform: scale(1.02);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Delete Links */
+    a[href*="delete"] {
+      color: var(--danger-color);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      transition: all 0.3s ease;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    a[href*="delete"]:hover {
+      background: var(--danger-color);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    /* Comment and Reply Forms */
+    .comment form,
+    .reply form {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .comment form input,
+    .reply form input {
+      margin-bottom: 0.5rem;
+    }
+
+    .comment form button,
+    .reply form button {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      background: var(--accent-color);
+    }
+
+    .comment form button:hover,
+    .reply form button:hover {
+      background: #059669;
+    }
+
+    /* Role Badge */
+    .author span:not(.small) {
+      background: var(--primary-color);
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .comment {
+        margin-left: 1rem;
+      }
+
+      .reply {
+        margin-left: 1rem;
+      }
+
+      .post,
+      .comment,
+      .reply {
+        padding: 1rem;
+      }
+
+      a[href*="delete"] {
+        position: static;
+        display: inline-block;
+        margin-top: 0.5rem;
+      }
+    }
+
+    /* Loading Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .post,
+    .comment,
+    .reply {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary-color);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-hover);
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Welcome to the Community, {{ user }}</h2>
+
+  <!-- Create new post -->
+  <div class="post">
+    <form method="POST" enctype="multipart/form-data">
+      <label for="content"><strong>Create a post:</strong></label>
+      <textarea name="content" required></textarea>
+
+      <label for="image">Attach an image (optional):</label>
+      <input type="file" name="image" accept="image/*">
+
+      <button type="submit">Post</button>
+    </form>
+  </div>
+
+  <div class="home">
+    <a href="{{ home_url }}" class="btn btn-primary">Back to Home</a>
+  </div>
+
+  <!-- Display all posts -->
+  {% for post in posts %}
+  <div class="post">
+    <p class="author">{{ post.username }} ({{ post.role }}) <span class="small">{{ post.created_at }}</span></p>
+    <p>{{ post.content }}</p>
+
+    {% if post.image_path %}
+    <img src="{{ url_for('static', filename=post.image_path.replace('uploads/', 'uploads/')) }}" alt="Post Image"
+      style="max-width: 300px; margin-top: 10px;">
+    {% endif %}
+
+
+    {% if post.username == user %}
+    <a href="{{ url_for('delete_post', post_id=post.id) }}" onclick="return confirm('Delete this post?')">Delete</a>
+    {% endif %}
+
+    <!-- Comments -->
+    {% for comment in comments_map[post.id] %}
+    <div class="comment">
+      <p class="author">{{ comment.username }} <span class="small">{{ comment.created_at }}</span></p>
+      <p>{{ comment.content }}</p>
+      {% if comment.username == user %}
+      <a href="{{ url_for('delete_comment', comment_id=comment.id) }}"
+        onclick="return confirm('Delete this comment?')">Delete</a>
+      {% endif %}
+
+      <!-- Replies -->
+      {% for reply in replies_map[comment.id] %}
+      <div class="reply">
+        <p class="author">{{ reply.username }} <span class="small">{{ reply.created_at }}</span></p>
+        <p>{{ reply.content }}</p>
+        {% if reply.username == user %}
+        <a href="{{ url_for('delete_reply', reply_id=reply.id) }}"
+          onclick="return confirm('Delete this reply?')">Delete</a>
+        {% endif %}
+      </div>
+      {% endfor %}
+
+      <!-- Add reply -->
+      <form method="POST" action="{{ url_for('add_reply', comment_id=comment.id) }}">
+        <input type="text" name="reply" placeholder="Write a reply..." required>
+        <button type="submit">Reply</button>
+      </form>
+    </div>
+    {% endfor %}
+
+    <!-- Add comment -->
+    <form method="POST" action="{{ url_for('add_comment', post_id=post.id) }}">
+      <input type="text" name="comment" placeholder="Write a comment..." required>
+      <button type="submit">Comment</button>
+    </form>
+  </div>
+  {% endfor %}
+
+</body>
+
+</html>
